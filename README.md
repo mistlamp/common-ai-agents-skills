@@ -14,10 +14,18 @@
 
 ### ✅ 방법 A: 자주 사용하는 프로젝트 - Git 서브모듈 설치
 
-스킬을 프로젝트에 영구적으로 연결합니다. AI가 매번 자동으로 스킬을 인식하므로, 단순히 요청만 하면 됩니다.
+스킬을 프로젝트에 영구적으로 연결합니다. AI가 매번 자동으로 스킬을 인식하므로, 이후에는 단순히 요청만 하면 됩니다.
 
+**AI에게 전달할 프롬프트 (복붙용):**
+
+```
+https://github.com/mistlamp/common-ai-agents-skills 레포지토리를 참고해서,
+이 프로젝트에 firebase_store 스킬을 Git 서브모듈로 등록해줘.
+README의 방법 A (서브모듈 설치) 가이드를 따라 진행해줘.
+```
+
+서브모듈 설치 명령어 (AI가 자동으로 실행하거나, 직접 실행해도 됩니다):
 ```bash
-# 프로젝트 최상단에서 실행
 git submodule add https://github.com/mistlamp/common-ai-agents-skills.git .agents/skills/common-ai-agents-skills
 git submodule update --init
 ```
@@ -36,6 +44,8 @@ git submodule update --remote
 
 설치 없이 AI가 GitHub에서 직접 최신 파일을 다운로드하여 실행합니다.  
 아래 프롬프트를 AI에게 붙여넣고, 맨 마지막 줄에 원하는 작업을 추가하세요.
+
+**AI에게 전달할 프롬프트 (복붙용):**
 
 ```
 아래 GitHub 저장소에는 공통 AI 스킬(Skills)들이 정의되어 있어.
