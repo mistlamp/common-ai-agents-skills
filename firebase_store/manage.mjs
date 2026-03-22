@@ -83,7 +83,13 @@ async function execute() {
       if (!docId || !dataRaw) { console.error("Error: Missing docId or jsonData for update"); process.exit(1); }
       let parsedData;
       try {
-        parsedData = JSON.parse(dataRaw);
+        // If dataRaw looks like a filename, read it
+        if (dataRaw.endsWith('.json') && fs.existsSync(dataRaw)) {
+          console.log(`Reading data from file: ${dataRaw}`);
+          parsedData = JSON.parse(fs.readFileSync(dataRaw, 'utf-8'));
+        } else {
+          parsedData = JSON.parse(dataRaw);
+        }
       } catch (err) {
         console.error("Invalid JSON data:", err.message);
         process.exit(1);
