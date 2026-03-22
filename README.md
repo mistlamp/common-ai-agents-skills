@@ -20,7 +20,8 @@
 
 ```
 https://github.com/mistlamp/common-ai-agents-skills 레포지토리를 참고해서,
-이 프로젝트에 firebase_store 스킬을 Git 서브모듈로 등록해줘.
+이 프로젝트에 common-ai-agents-skills 전체를 Git 서브모듈로 등록해줘.
+(이 저장소에는 여러 AI 스킬들이 포함되어 있으며, 서브모듈 등록 시 모든 스킬이 함께 설치됩니다.)
 README의 방법 A (서브모듈 설치) 가이드를 따라 진행해줘.
 ```
 
