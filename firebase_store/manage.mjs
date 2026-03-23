@@ -50,13 +50,30 @@ async function execute() {
     else if (action === 'get') {
       if (!docId) { console.error("Error: Missing docId"); process.exit(1); }
       
-      // Some server versions might not support specific /docId route, so fallback to filtering list
-      console.log(`Fetching list to find document ${docId}...`);
-      let currentCursor = undefined;
       let found = false;
+      
+      // 1. Try direct route if server supports it
+      try {
+        const directUrl = `${BASE_URL}/${collection}/documents/${docId}`;
+        const directRes = await fetch(directUrl, { method: 'GET', headers });
+        if (directRes.ok) {
+          const directJson = await directRes.json();
+          if (directJson && directJson.id === docId) {
+            console.log(JSON.stringify(directJson, null, 2));
+            return;
+          }
+        }
+      } catch(err) {
+        // Fallback if direct fetch throws (e.g. 404 HTML)
+      }
 
-      // Try searching up to 5 result pages
-      for (let i = 0; i < 5; i++) {
+      // 2. Fallback to paginated list finding
+      console.log(`Direct fetch unsuccessful. Falling back to paginated search for document ${docId}...`);
+      let currentCursor = undefined;
+      let pagesChecked = 0;
+
+      while (true) {
+        pagesChecked++;
         const url = new URL(`${BASE_URL}/${collection}/documents`);
         if (currentCursor) url.searchParams.append('cursor', currentCursor);
         
@@ -72,10 +89,13 @@ async function execute() {
         
         if (!json.hasMore || !json.nextCursor) break;
         currentCursor = json.nextCursor;
+        
+        // Safety break
+        if (pagesChecked > 500) break;
       }
       
       if (!found) {
-        console.error(`Error: Document ${docId} not found in first 50 results.`);
+        console.error(`Error: Document ${docId} not found after checking ${pagesChecked} pages.`);
         process.exit(1);
       }
     }
